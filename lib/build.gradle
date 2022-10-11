@@ -1,8 +1,10 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'signing'
 }
 
+archivesBaseName = 'spreadsheet-writer'
 version = '0.1.0'
 group = 'me.elyor'
 
@@ -17,6 +19,67 @@ dependencies {
     api 'org.apache.commons:commons-csv:1.9.0'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+
+        mavenJava(MavenPublication) {
+
+            groupId = 'me.elyor'
+            artifactId = 'spreadsheet-writer'
+            version = '0.1.0'
+            from components.java
+
+            pom {
+                name = 'Spreadsheet Writer'
+                description = "Spreadsheet Writer is Simple yet effective, " +
+                        "memory efficient and easy to use spreadsheet writer library"
+                url = 'https://github.com/elyorbe/spreadsheet-writer'
+                inceptionYear = '2022'
+
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://www.opensource.org/licenses/mit-license.php'
+                    }
+                }
+
+                developer {
+                    id = 'elyor'
+                    name = 'Elyorbek Ibrokhimov'
+                    email = 'eliyoribek@gmail.com'
+                }
+                scm {
+                    connection = 'scm:git:git:github.com/elyorbe/spreadsheet-writer.git'
+                    developerConnection = 'scm:git:ssh:github.com/elyorbe/spreadsheet-writer.git'
+                    url = 'https://github.com/Elyorbe/spreadsheet-writer'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'OSSRH'
+            url = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            credentials {
+                username = 'username'
+                password = 'password'
+            }
+        }
+    }
+}
+
+signing {
+    def signingKey = 'signgingkey'
+    def signingPassword = 'signingpassword'
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.mavenJava
 }
 
 tasks.named('test') {
