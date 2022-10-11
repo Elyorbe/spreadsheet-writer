@@ -1,0 +1,32 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+version = '0.1.0'
+group = 'me.elyor'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    api 'org.apache.poi:poi:5.2.3'
+    api 'org.apache.poi:poi-ooxml:5.2.3'
+    api 'org.apache.commons:commons-lang3:3.12.0'
+    api 'org.apache.commons:commons-csv:1.9.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+javadoc {
+    configure(options) {
+        tags(
+                'implSpec:a:Implementation Requirements:'
+        )
+    }
+}
